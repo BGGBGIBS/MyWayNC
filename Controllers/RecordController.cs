@@ -9,6 +9,8 @@ using MyWayNC.Models;
 
 namespace MyWayNC.Controllers
 {
+    [ApiController]
+    [Route("api/[controller]")]
     public class RecordController : Controller
     {
         private readonly MyWayContext _context;
@@ -19,6 +21,8 @@ namespace MyWayNC.Controllers
         }
 
         // GET: Record
+        [HttpGet]
+        [Route("Index")]
         public async Task<IActionResult> Index()
         {
             var myWayContext = _context.Records.Include(@record => @record.Event).Include(@record => @record.Grade).Include(@record => @record.Skill);
@@ -26,6 +30,8 @@ namespace MyWayNC.Controllers
         }
 
         // GET: Record/Details/5
+        [HttpGet]
+        [Route("Details/{id?}")]
         public async Task<IActionResult> Details(long? id)
         {
             if (id == null || _context.Records == null)
@@ -166,14 +172,14 @@ namespace MyWayNC.Controllers
             {
                 _context.Records.Remove(@record);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool RecordExists(long id)
         {
-          return (_context.Records?.Any(e => e.RecordId == id)).GetValueOrDefault();
+            return (_context.Records?.Any(e => e.RecordId == id)).GetValueOrDefault();
         }
     }
 }
